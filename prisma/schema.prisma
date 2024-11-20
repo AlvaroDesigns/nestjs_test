@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  name      String
+  email     String      @unique
+  password  String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  avatar    String?
+  itinerary Itinerary[]
+}
+
+model Itinerary {
+  id        Int       @id @default(autoincrement())
+  title     String
+  days      Int       @default(0)
+  startDate DateTime  @updatedAt
+  endDate   DateTime  @updatedAt
+  image     String?
+  date      DateTime
+  userId    Int
+  items     Details[]
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Details {
+  id           Int         @id @default(autoincrement())
+  title        String
+  days         Int         @default(0)
+  startDate    DateTime    @updatedAt
+  endDate      DateTime    @updatedAt
+  departure    String?
+  destination  String?
+  numberFlight String?
+  description  String[]
+  itineraryId  Int
+  type         DetailsType @default(FLIGHT)
+  itinerary    Itinerary   @relation(fields: [itineraryId], references: [id])
+}
+
+enum DetailsType {
+  FLIGHT
+  TRANSFER
+  REN_CAR
+  BOAT
+  HOTEL
+  TRIP
+}
