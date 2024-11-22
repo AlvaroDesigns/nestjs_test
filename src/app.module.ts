@@ -1,4 +1,3 @@
-
 import { Module } from "@nestjs/common";
 import { AuthModule } from "./auth/auth.module";
 import { ItineraryModule } from "./itinerary/itinerary.module";
